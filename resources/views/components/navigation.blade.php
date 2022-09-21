@@ -80,18 +80,16 @@
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-gray-200">
             @if (Auth::user())
-                <div class="px-4">
+                <div class="px-4 mb-3">
                     <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
                     <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
                 </div>
             @endif
-            <div class="mt-3 space-y-1">
+            <div class="space-y-1">
                 <!-- Authentication -->
                 @if (!Auth::user())
-                    <x-responsive-nav-link :href="route('logout')"
-                                           onclick="event.preventDefault();
-                                        this.closest('form').submit();">
-                        {{ __('Log Out') }}
+                    <x-responsive-nav-link :href="route('login')">
+                        {{ __('Log In') }}
                     </x-responsive-nav-link>
                 @else
                     <form method="POST" action="{{ route('logout') }}">
