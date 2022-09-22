@@ -23,15 +23,14 @@ class DatabaseSeeder extends Seeder
         $this->call(CategoryTableSeeder::class);
         //call tagtableseeder
         $this->call(TagTableSeeder::class);
-//        Category::factory(25)->create();
-//        Tag::factory(50)->create();
 
-        // \App\Models\User::factory(10)->create();
+        Article::all()->each(function ($article) {
+            $article->categories()->sync(Category::all()->random(2));
+            $article->tags()->sync(Tag::all()->random(2));
+        });
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        //I am so smart 😁 take that Stack Exchange
+
         User::factory()->create([
             'name' => 'Raig',
             'email' => 'raig.ramzy@gmail.com',
