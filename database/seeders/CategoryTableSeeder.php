@@ -18,6 +18,10 @@ class CategoryTableSeeder extends Seeder
         //create 25 categories
         $categories = [
             [
+                'id' => 0,
+                'name' => 'Uncategorized',
+            ],
+            [
                 'name' => 'Laravel',
             ],
             [
