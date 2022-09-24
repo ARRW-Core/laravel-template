@@ -20,6 +20,7 @@ return new class extends Migration
             $table->mediumText('body');
             $table->boolean('is_published')->default(false);
             $table->timestamps();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

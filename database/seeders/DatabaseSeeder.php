@@ -18,6 +18,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        User::factory()->create([
+            'name' => 'Raig',
+            'email' => 'raig.ramzy@gmail.com',
+            'password' => '$2y$10$OIIAeDva4HoTLCyZsZwieOo/LfsxqPqAdd1wpzUxP6owryDHZjIt.', // password
+        ]);
+
         Article::factory(10)->create();
         //call categorytableseeder
         $this->call(CategoryTableSeeder::class);
@@ -31,10 +37,6 @@ class DatabaseSeeder extends Seeder
 
         //I am so smart 😁 take that Stack Exchange
 
-        User::factory()->create([
-            'name' => 'Raig',
-            'email' => 'raig.ramzy@gmail.com',
-            'password' => '$2y$10$OIIAeDva4HoTLCyZsZwieOo/LfsxqPqAdd1wpzUxP6owryDHZjIt.', // password
-        ]);
+
     }
 }
