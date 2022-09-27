@@ -5,7 +5,7 @@ namespace App\View\Components;
 use App\Models\Category;
 use Illuminate\View\Component;
 
-class AppLayout extends Component
+class DashboardLayout extends Component
 {
     /**
      * Get the view / contents that represents the component.
@@ -14,6 +14,6 @@ class AppLayout extends Component
      */
     public function render()
     {
-        return view('layouts.app');
+        return view('layouts.dashboard');
     }
 }

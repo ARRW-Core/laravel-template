@@ -38,12 +38,14 @@ Route::get('/sports', function () {
     return view('pages.sports');
 })->name('sports');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+Route::prefix('dashboard')->middleware(['auth'])->group(function () {
+    Route::get('/', function () {
+        return view('pages.dashboard.dashboard');
+    })->name('dashboard');
 
-Route::get('/dashboard/news-overview', function () {
-    return view('pages.dashboard.news-overview');
-})->middleware(['auth'])->name('news-overview');
+    Route::get('/article-overview', [ArticleController::class, 'index'])->name('article-overview');
+
+    Route::get('/create-article', [ArticleController::class, 'create'])->name('create-article');
+});
 
 require __DIR__.'/auth.php';
