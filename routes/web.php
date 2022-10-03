@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\ArticleController;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -46,11 +48,12 @@ Route::prefix('dashboard')->middleware(['auth'])->group(function () {
     Route::get('/article-overview', [ArticleController::class, 'index'])->name('article-overview');
 
     Route::get('/create-article', [ArticleController::class, 'create'])->name('create-article');
+//    Route::get('/create/{temp}/{images}/{year}/{month}/{file_name}', [ArticleController::class, 'preview'])->name('add-media-to-article');
+    Route::get('/create/{temp?}', [ArticleController::class, 'preview'])->where('temp', '(.*)')->name('add-media-to-article');
     Route::post('/store-media', [ArticleController::class, 'store_media'])->name('store-media');
     Route::post('/store-article', [ArticleController::class, 'store_article'])->name('store-article');
 
-
-
 });
+
 
 require __DIR__.'/auth.php';

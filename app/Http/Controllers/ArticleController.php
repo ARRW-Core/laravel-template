@@ -8,6 +8,9 @@ use App\Models\Image;
 use Barryvdh\Debugbar\Facades\Debugbar;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
+
 
 class ArticleController extends Controller
 {
@@ -22,23 +25,47 @@ class ArticleController extends Controller
     }
 
     public function create() {
-        return view('pages.dashboard.create-article', []);
+        return view('pages.dashboard.create-article', ['images' => $this->images]);
     }
 
+
     public function preview(Request $request) {
-        return view('pages.dashboard.create-article', []);
+        return view('pages.dashboard.create-article', ['images' => json_decode($request->image_uri)]);
     }
 
     public function store_media(Request $request) {
-        return $this->uploadImage($request->media_upload);
+        Debugbar::info($request->all());
+        if ($request->hasFile('media_upload')) {
+            $imageUri = $this->uploadImage($request->media_upload);
+        }
+        else if (isset($request->media_url)) {
+            $imageUri = $request->media_url;
+        }
+        else {
+            $imageUri = '';
+        }
+//        dd($imageUri);
+        //add curly braces to the imageuri
+        $encodedJson = json_encode([$imageUri, 'a']);
+
+//        dd($imageUri);
+        return redirect()->route('add-media-to-article', ['image_uri' => $encodedJson]);
     }
 
     public function store_article(Request $request) {
-        dd(uuid_create(UUID_TYPE_RANDOM));
+//
+//        Storage::move('public/temp/images/2022/10/0f32c7c2-86ff-4e8a-9c07-88d1532f848c.png', 'public/images/2022/10/0f32c7c2-86ff-4e8a-9c07-88d1532f848c.png');
+//        return unlink('storage/images/2022/10/271af950-7890-43bb-a9f7-68075f759630.png');
+
+//        return Storage::deleteDirectory('public/temp');
+//        return dd(Storage::allFiles());
+
     }
 
     private function uploadImage(UploadedFile $media_upload) {
-        dd($media_upload);
+        $imageName = uuid_create(UUID_TYPE_RANDOM) . '.' . $media_upload->extension();
+        $imagePath = $media_upload->storeAs('temp/images/'.now()->format('Y/m'), $imageName, 'public');
+        return $imagePath;
     }
 
 }
