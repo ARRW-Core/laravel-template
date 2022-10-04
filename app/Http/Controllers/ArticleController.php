@@ -8,6 +8,7 @@ use App\Models\Image;
 use Barryvdh\Debugbar\Facades\Debugbar;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
@@ -25,16 +26,17 @@ class ArticleController extends Controller
     }
 
     public function create() {
+        Debugbar::info(Auth::id());
         return view('pages.dashboard.create-article', ['images' => $this->images]);
     }
 
 
     public function preview(Request $request) {
+        Debugbar::info(Auth::user()->getAuthIdentifier());
         return view('pages.dashboard.create-article', ['images' => json_decode($request->image_uri)]);
     }
 
     public function store_media(Request $request) {
-        Debugbar::info($request->all());
         if ($request->hasFile('media_upload')) {
             $imageUri = $this->uploadImage($request->media_upload);
         }
@@ -64,7 +66,7 @@ class ArticleController extends Controller
 
     private function uploadImage(UploadedFile $media_upload) {
         $imageName = uuid_create(UUID_TYPE_RANDOM) . '.' . $media_upload->extension();
-        $imagePath = $media_upload->storeAs('temp/images/'.now()->format('Y/m'), $imageName, 'public');
+        $imagePath = $media_upload->storeAs('temp/images/'.now()->format('Y/m').'/'.Auth::id(), $imageName, 'public');
         return $imagePath;
     }
 

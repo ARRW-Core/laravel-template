@@ -34,7 +34,7 @@
                             @if (isset($images))
                                 @foreach($images as $image)
                                     <div class="max-w-sm w-full lg:max-w-full lg:flex">
-                                        <div class="h-64 lg:h-64 lg:w-64 flex-none bg-contain bg-no-repeat bg-center rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden" style="background-image: url('{{asset('storage/'.$image)}}')" title="Woman holding a mug">
+                                        <div class="h-64 lg:h-64 lg:w-64 flex-none border-gray-400 lg:border-l lg:border-t lg:border-gray-400 bg-contain bg-no-repeat bg-center rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden" style="background-image: url('{{asset('storage/'.$image)}}')" title="Woman holding a mug">
                                         </div>
                                         <div class="border-r border-b border-l border-gray-400 lg:border-l-0 lg:border-t lg:border-gray-400 bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal">
                                             <div class="mb-8">
