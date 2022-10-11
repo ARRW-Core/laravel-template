@@ -11,8 +11,8 @@ export default defineConfig({
                 'resources/js/app.js',
             ],
             refresh: true,
-            buildDirectory: '../public_html',
-            publicDirectory: '../public_html',
+            buildDirectory: 'build',
+            publicDirectory: 'public_html',
         }),
     ],
 

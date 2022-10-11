@@ -14,6 +14,8 @@ class Image extends Model
         'article_id',
         'is_cover',
         'uri',
+        'caption',
+        'alt'
     ];
 
     public function article(): BelongsTo {

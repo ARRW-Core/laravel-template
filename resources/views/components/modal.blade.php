@@ -1,7 +1,7 @@
 <div x-cloak x-data="{ on: false }">
     {{ $trigger }}
 
-    <div class="fixed inset-x-0 px-4 pb-4 sm:inset-0 sm:flex sm:items-center sm:justify-center" x-show="on">
+    <div class="fixed inset-x-0 px-4 pb-4 sm:inset-0 sm:flex sm:items-center sm:justify-center z-50" x-show="on">
         <div
             class="fixed inset-0 transition-opacity"
             x-show="on"

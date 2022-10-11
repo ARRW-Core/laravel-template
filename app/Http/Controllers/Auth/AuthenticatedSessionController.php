@@ -46,7 +46,7 @@ class AuthenticatedSessionController extends Controller
     {
         Auth::guard('web')->logout();
 
-        Storage::deleteDirectory('public/temp');
+        Storage::deleteDirectory('public/temp/images/' . Auth::id());
 
         $request->session()->invalidate();
 

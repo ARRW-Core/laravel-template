@@ -20,26 +20,60 @@
                     {{--                Title--}}
                     <div class="flex flex-col">
                         <label for="title" class="leading-7 text-sm text-gray-600">Title</label>
-                        <input type="text" id="title" name="title" class="w-full text-2xl bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                        <input type="text" id="title" name="title" class="w-full text-2xl bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" value="{{ old('title') }}">
                     </div>
                     {{--                Body--}}
                     <div class="flex flex-col mt-4">
                         <label for="body" class="leading-7 text-sm text-gray-600">Body</label>
-                        <textarea id="body" name="body" class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"></textarea>
+                        <textarea id="body" name="body" class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">{{ old('body') }}</textarea>
+                    </div>
+
+                    <div class="flex flex-col mt-4">
+                        <input id="categories" name='categories' placeholder='Select categories from the list' value="{{ old('categories') }}">
+                        <script>
+                            var input1 = document.getElementById('categories')
+                            var tagify = new Tagify(input1, {
+                                whitelist: {!! json_encode($categories) !!},
+                                dropdown: {
+                                    maxItems: 20,           // <- mixumum allowed rendered suggestions// <- custom classname for this dropdown, so it could be targeted
+                                    enabled: 0,             // <- show suggestions on focus
+                                    closeOnSelect: false    // <- do not hide the suggestions dropdown once an item has been selected
+                                }
+                            })
+                            tagify.on('change', console.log)
+                        </script>
+                    </div>
+                    <div class="flex flex-col mt-4">
+                        <input id="tags" name='tags' placeholder='Select tags from the list' value="{{ old('tags') }}">
+                        <script>
+                            var input2 = document.getElementById('tags')
+                            var tagify = new Tagify(input2, {
+                                whitelist: {!! json_encode($tags) !!},
+                                dropdown: {
+                                    maxItems: 20,           // <- mixumum allowed rendered suggestions// <- custom classname for this dropdown, so it could be targeted
+                                    enabled: 0,             // <- show suggestions on focus
+                                    closeOnSelect: false    // <- do not hide the suggestions dropdown once an item has been selected
+                                }
+                            })
+                            tagify.on('change', console.log)
+                        </script>
                     </div>
 {{--                    images--}}
                     <div class="flex flex-col mt-4">
                         <label for="images" class="leading-7 text-sm text-gray-600">Images</label>
-                        <div class="flex flex-wrap">
+                        <div class="">
                             @if (isset($images))
-                                @foreach($images as $image)
+                                <x-form.input name="images_count" type="hidden" value="{{count($images)}}"></x-form.input>
+                                @foreach($images as $key => $image)
                                     <div class="max-w-sm w-full lg:max-w-full lg:flex">
-                                        <div class="h-64 lg:h-64 lg:w-64 flex-none border-gray-400 lg:border-l lg:border-t lg:border-gray-400 bg-contain bg-no-repeat bg-center rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden" style="background-image: url('{{asset('storage/'.$image)}}')" title="Woman holding a mug">
-                                        </div>
-                                        <div class="border-r border-b border-l border-gray-400 lg:border-l-0 lg:border-t lg:border-gray-400 bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal">
-                                            <div class="mb-8">
-                                                <div class="text-gray-900 font-bold text-xl mb-2">Can coffee make you a better developer?</div>
-                                                <p class="text-gray-700 text-base">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus quia, nulla! Maiores et perferendis eaque, exercitationem praesentium nihil.</p>
+                                        <div class="h-64 lg:h-64 lg:w-64 flex-none border-gray-400 lg:border-l lg:border-t lg:border-gray-400 bg-contain bg-no-repeat bg-center rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden" style="background-image: url('{{!str_contains($image['uri'], 'temp/images') ? $image['uri'] : asset('storage/'.$image['uri'])}}')" title="Woman holding a mug"></div>
+                                        <x-form.input name="image_uri{{$key}}" type="hidden" value="{{ $image['uri'] }}"></x-form.input>
+                                        <div class="flex-1 border-r border-b border-l border-gray-400 lg:border-l-0 lg:border-t lg:border-gray-400 bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal">
+                                            <div class="mb-8" {!! 'x-data="{is_cover_toggle_'.$key.': '.$image['is_cover'].'}"' !!}>
+                                                <x-form.input label="Caption" name="caption{{$key}}" type="text" value="{{$image['caption']}}"></x-form.input>
+                                                <x-form.input label="Alt" name="alt{{$key}}" type="text" value="{{$image['alt']??''}}"></x-form.input>
+                                                <x-form.toggle label="Is Cover Image?" button_name="{!! 'is_cover_toggle_'.$key !!}"></x-form.toggle>
+                                                <x-form.input label="" name="is_cover{{$key}}" type="hidden" x-bind:value="{!! 'is_cover_toggle_'.$key !!}"></x-form.input>
                                             </div>
                                         </div>
                                     </div>

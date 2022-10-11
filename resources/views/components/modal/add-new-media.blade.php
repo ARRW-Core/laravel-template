@@ -9,13 +9,13 @@
         </div>
     </x-slot>
     <x-form x-data="{ toggleOn: false, toggleOn2: false }" action="{{ route('store-media') }}" enctype="multipart/form-data">
-        <x-form.input label="Media URL" name="media_url" type="text"  x-show="toggleOn" x-bind:disabled="!toggleOn"/>
-        <x-form.input label="Media Upload" name="media_upload" type="file" x-show="!toggleOn"  x-bind:disabled="toggleOn"/>
+        <x-form.input label="Media URL" name="media_url" type="text"  x-show="toggleOn" x-bind:disabled="!toggleOn" value="{{ old('media_url') }}"/>
+        <x-form.input label="Media Upload" name="media_upload" type="file" x-show="!toggleOn" x-bind:disabled="toggleOn" value="{{ old('media_upload') }}"/>
         <x-form.toggle label="Use Web URL" button_name="toggleOn"/>
         <x-form.toggle label="Is A Cover Image?" button_name="toggleOn2"/>
         <x-form.input name="is_cover" type="hidden" x-bind:value="toggleOn2" ></x-form.input>
-        <x-form.input label="Caption" type="text" name="caption" />
-        <x-form.input label="Alt Text" type="text" name="alt_text" />
+        <x-form.input label="Caption" type="text" name="caption" value="{{ old('caption') }}" />
+        <x-form.input label="Alt Text" type="text" name="alt" value="{{ old('alt') }}"/>
         <x-slot name="button1">
             <span class="flex-auto w-full rounded-md shadow-sm sm:ml-3 sm:w-auto">
                 <button type="submit"

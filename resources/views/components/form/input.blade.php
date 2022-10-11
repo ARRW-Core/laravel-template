@@ -1,7 +1,7 @@
 @props(['label' => '', 'name', 'type' => 'text', 'placeholder' => '', 'required' => false, 'autofocus' => false])
 
 
-<div class="flex-auto" {{ $attributes }}>
+<div :class="'{{$type}}' != 'hidden' ? 'flex-auto' : ''" {{ $attributes }}>
     <div :class="'{{$type}}' != 'hidden' ? 'mb-3 xl:w-96' : ''">
         <label for="{{ $name }}" :class="'{{$type}}' != 'hidden' ? 'form-label inline-block mb-2 text-gray-700' : ''">{{ $label }}</label>
         <input

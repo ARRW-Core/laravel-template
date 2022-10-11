@@ -1,7 +1,5 @@
 import './bootstrap';
 
-import Alpine from 'alpinejs';
+import {Tagify as tagify} from '@yaireo/tagify';
 
-window.Alpine = Alpine;
 
-Alpine.start();
