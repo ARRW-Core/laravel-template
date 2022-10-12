@@ -23,23 +23,10 @@ class ArticleController extends Controller
         ]);
     }
 
-    public function create() {
-        return view('pages.dashboard.create-article', ['categories' => Category::orderBy('id')->pluck('name'), 'tags' => Tag::orderBy('id')->pluck('name')]);
-    }
-
-
-    public function preview(Request $request) {
-        /*
-         * This function is used to preview the image that is being uploaded to the article.
-         * The image is stored in the storage/app/public/temp folder.
-         * First the image url is retrieved from the request.
-         * Then the image url is fetched from session and decoded.
-         * Then both the arrays are merged.
-         * Then the merged array is encoded and stored in session.
-         * Then the merged array is returned with view
-         */
+    public function create(Request $request) {
         return view('pages.dashboard.create-article', ['images' => $request->session()->get('image'), 'categories' => Category::orderBy('id')->pluck('name'), 'tags' => Tag::orderBy('id')->pluck('name')]);
     }
+
 
     public function store_media(Request $request) {
         /*
@@ -88,7 +75,7 @@ class ArticleController extends Controller
         $request->session()->put('image', $merged_images);
 
 //        dd($imageUri);
-        return redirect()->route('add-media-to-article');
+        return redirect()->route('create-article')->with('success', 'Image uploaded successfully');
     }
 
     public function store_article(Request $request) {
@@ -136,9 +123,9 @@ class ArticleController extends Controller
         if(isset($request->images_count)) {
             for($i = 0; $i < $request->images_count; $i++) {
                 if (str_contains($request->input('image_uri' . $i), 'temp/')) {
-                    $real_image_uri = str_replace('temp/', 'public/', $request->input('image_uri' . $i));
+                    $real_image_uri = str_replace('temp/', '', $request->input('image_uri' . $i));
                     $temp_image_uri = str_replace('temp/', 'public/temp/', $request->input('image_uri' . $i));
-                    echo Storage::move($temp_image_uri, $real_image_uri);
+                    Storage::move($temp_image_uri, $real_image_uri);
                 }
                 else {
                     $real_image_uri = $request->input('image_uri' . $i);
@@ -152,9 +139,9 @@ class ArticleController extends Controller
 
             }
         }
-//        Storage::deleteDirectory('public/temp');
+        Storage::deleteDirectory('public/temp');
         $request->session()->forget('image');
-        redirect()->route('dashboard');
+        return redirect()->route('dashboard');
 //        dd($request->all());
 
 //
